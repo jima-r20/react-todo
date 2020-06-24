@@ -16,7 +16,9 @@ const SignUp = (props) => {
   return (
     <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
       <div className="field">
-        <label>Email</label>
+        <label>
+          Email <span style={{ color: 'red' }}>(Required)</span>
+        </label>
         <input
           name="email"
           ref={register({
@@ -28,18 +30,24 @@ const SignUp = (props) => {
           {errors.email && 'Email is required'}
         </div>
       </div>
+
       <div className="field">
-        <label>Display Name</label>
+        <label>
+          Display Name <span style={{ color: 'red' }}>(Required)</span>
+        </label>
         <input
-          name="displayName"
+          name="display_name"
           ref={register({ required: true, maxLength: 20 })}
         />
         <div style={{ color: 'red' }}>
-          {errors.displayName && 'Display Name is required'}
+          {errors.display_name && 'Display Name is required'}
         </div>
       </div>
+
       <div className="field">
-        <label>Password</label>
+        <label>
+          Password <span style={{ color: 'red' }}>(Required)</span>
+        </label>
         <input
           name="password"
           ref={register({ required: true, minLength: 8 })}
@@ -48,13 +56,17 @@ const SignUp = (props) => {
           {errors.password && 'Password is required'}
         </div>
       </div>
+
       <div className="field">
-        <label>Confirm Password</label>
-        <input name="confirmPassword" ref={register({ required: true })} />
-        <div style={{ color: 'red' }}>
-          {errors.confirmPassword && 'Confirm Password is required'}
-        </div>
+        <label>About</label>
+        <input name="about" ref={register} />
       </div>
+
+      <div className="field">
+        <label>Avatar URL</label>
+        <input name="avatar_url" ref={register} />
+      </div>
+
       <button className="ui button primary" type="submit">
         Sign Up
       </button>
