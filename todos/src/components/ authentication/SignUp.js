@@ -7,8 +7,8 @@ const SignUp = (props) => {
   const { signUp } = props;
   const { register, errors, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (formValues) => {
+    const data = { ...formValues, about: '', avatar_url: '' };
     signUp(data);
   };
 
@@ -27,7 +27,12 @@ const SignUp = (props) => {
           })}
         />
         <div style={{ color: 'red' }}>
-          {errors.email && 'Email is required'}
+          {errors.email &&
+            errors.email.type === 'required' &&
+            'Email is required'}
+          {errors.email &&
+            errors.email.type === 'pattern' &&
+            'This input format is invalid'}
         </div>
       </div>
 
@@ -53,18 +58,14 @@ const SignUp = (props) => {
           ref={register({ required: true, minLength: 8 })}
         />
         <div style={{ color: 'red' }}>
-          {errors.password && 'Password is required'}
+          {errors.password &&
+            errors.password.type === 'required' &&
+            'Password is required'}
+          {errors.password &&
+            errors.password.type === 'minLength' &&
+            'Password must be at least 8 characters'}
+          {console.log(errors.password)}
         </div>
-      </div>
-
-      <div className="field">
-        <label>About</label>
-        <input name="about" ref={register} />
-      </div>
-
-      <div className="field">
-        <label>Avatar URL</label>
-        <input name="avatar_url" ref={register} />
       </div>
 
       <button className="ui button primary" type="submit">
