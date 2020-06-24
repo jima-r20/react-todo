@@ -3,6 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import MainPage from './pages/MainPage';
 import SignUp from './ authentication/SignUp';
+import SignUpResult from './ authentication/SignUpResult';
 import SignIn from './ authentication/SignIn';
 import history from '../history';
 
@@ -15,6 +16,7 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={MainPage} />
             <Route path="/signup" exact component={SignUp} />
+            <Route path="/signup/result" exact component={SignUpResult} />
             <Route path="/signin" exact component={SignIn} />
           </Switch>
         </div>
