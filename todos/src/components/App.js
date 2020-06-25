@@ -5,6 +5,7 @@ import MainPage from './pages/MainPage';
 import SignUp from './ authentication/SignUp';
 import SignUpResult from './ authentication/SignUpResult';
 import SignIn from './ authentication/SignIn';
+import TodoList from './todos/TodoList';
 import history from '../history';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/signup" exact component={SignUp} />
             <Route path="/signup/result" exact component={SignUpResult} />
             <Route path="/signin" exact component={SignIn} />
+            <Route path="/todo" exact component={TodoList} />
           </Switch>
         </div>
       </Router>
