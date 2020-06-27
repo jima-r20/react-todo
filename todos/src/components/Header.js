@@ -6,25 +6,24 @@ import { signOut } from '../actions';
 const Header = (props) => {
   // ログアウト処理
   const handleSignOut = () => {
-    sessionStorage.clear();
     props.signOut();
   };
 
   // ログイン状態によってボタンの表示を変更
   const renderAuthButton = () => {
-    if (props.isSignedIn) {
+    if (props.isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
-        <Link to="/" className="ui button" onClick={handleSignOut}>
+        <Link to="/" className="ui button basic red" onClick={handleSignOut}>
           Sign Out
         </Link>
       );
     } else {
       return (
         <React.Fragment>
-          <Link to="/signin" className="ui button">
+          <Link to="/signin" className="ui button primary">
             Sign In
           </Link>
-          <Link to="/signup" className="ui button">
+          <Link to="/signup" className="ui button basic blue">
             Sign Up
           </Link>
         </React.Fragment>

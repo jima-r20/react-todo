@@ -10,26 +10,10 @@ const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();
 
   const onSubmit = async (formValues) => {
-    // ログインフォームのemailをREST APIのログイン処理ようにusernameに変更
-    // /api/login/にログインのリクエストを送信し、レスポンスを取得
-    // sessionStorageにセッション情報を格納
-    // ログイン成功後、ToDoリストのページに遷移
+    // ログインフォームのemailをREST APIのログイン処理用にusernameに変更
     const { email, password } = formValues;
     const params = { username: email, password };
-
-    try {
-      const response = await baseUrl.post('/api/login/', params);
-      sessionStorage.setItem('userId', response.data.id);
-      sessionStorage.setItem('token', response.data.token);
-
-      //この辺うまくいかない(action creatorに伝わるけどreducerにdispatchできない)
-      const userId = sessionStorage.getItem('userId');
-      props.signIn(userId);
-
-      history.push('/todos');
-    } catch (err) {
-      console.log(err);
-    }
+    props.signIn(params);
   };
 
   return (

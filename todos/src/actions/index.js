@@ -11,12 +11,31 @@ export const signUp = (formValues) => async (dispatch) => {
 };
 
 // ログイン
-export const signIn = (userId) => {
-  return { type: SIGN_IN, payload: userId };
+export const signIn = (params) => async (dispatch) => {
+  // トークン認証　ログイン処理
+  // /api/login/にログインのリクエストを送信し、レスポンスを取得
+  // sessionStorageにセッション情報を格納
+  // ログイン成功後、ToDoリストのページに遷移
+  // ↓
+  // 上記処理で取得したuserIdからユーザ情報を取得(Id, display_name)
+  try {
+    const res = await baseUrl.post('/api/login/', params);
+    sessionStorage.setItem('userId', res.data.id);
+    sessionStorage.setItem('token', res.data.token);
+    const userId = sessionStorage.getItem('userId');
+    const response = await baseUrl.get(`/api/users/${userId}`);
+    dispatch({ type: SIGN_IN, payload: response.data });
+    // ログイン後のメインページ(Todo一覧ページに遷移)
+    history.push('/todos');
+  } catch (err) {
+    console.log('Login error');
+  }
 };
 
 // ログアウト
 export const signOut = () => {
+  // セッション情報のクリア
+  sessionStorage.clear();
   return { type: SIGN_OUT };
 };
 
