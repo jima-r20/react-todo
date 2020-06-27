@@ -2,25 +2,34 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import history from '../../history';
 import { connect } from 'react-redux';
+import { signIn } from '../../actions';
 
 import baseUrl from '../../apis/baseUrl';
 
 const SignIn = () => {
   const { register, errors, handleSubmit } = useForm();
 
-  const onSubmit = async (formValues) => {
-    const { email, password } = formValues;
+  const onSubmit = async (formValues, props) => {
     // ログインフォームのemailをREST APIのログイン処理ようにusernameに変更
     // /api/login/にログインのリクエストを送信し、レスポンスを取得
     // sessionStorageにセッション情報を格納
     // ログイン成功後、ToDoリストのページに遷移
+    const { email, password } = formValues;
     const params = { username: email, password };
-    const response = await baseUrl.post('/api/login/', params);
-    sessionStorage.setItem('userId', response.data.id);
-    sessionStorage.setItem('token', response.data.token);
-    history.push('/todo');
 
-    // isSignedIn的なstateを変更するためのactionがほしい
+    try {
+      const response = await baseUrl.post('/api/login/', params);
+      sessionStorage.setItem('userId', response.data.id);
+      sessionStorage.setItem('token', response.data.token);
+
+      //この辺うまくいかない(action creatorに伝わるけどreducerにdispatchできない)
+      // const userId = sessionStorage.getItem('userId');
+      // signIn(userId);
+
+      history.push('/todos');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -61,4 +70,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default connect(null, { signIn })(SignIn);

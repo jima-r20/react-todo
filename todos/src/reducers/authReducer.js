@@ -1,9 +1,19 @@
-import { SIGN_UP } from '../actions/types';
+import { SIGN_UP, SIGN_IN, SIGN_OUT } from '../actions/types';
 
-export default (state = {}, action) => {
+const INITIAL_STATE = {
+  isSignedIn: null,
+  userId: null,
+};
+
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SIGN_UP:
-      return { ...state, [action.payload.id]: action.payload }; // SIGN_UPはstate更新いらない？？
+      // SIGN_UPはstate更新いらない？？
+      return { ...state, [action.payload.id]: action.payload };
+    case SIGN_IN:
+      return { ...state, isSignedIn: true, userId: action.payload };
+    case SIGN_OUT:
+      return { ...state, isSignedIn: false, userId: null };
     default:
       return state;
   }
