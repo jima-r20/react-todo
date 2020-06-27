@@ -2,15 +2,19 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchTodos } from '../../actions';
 
-const TodoList = () => {
+const TodoList = (props) => {
   // useEffect(() => {
   //   fetchTodos();
   // }, []);
 
+  const handleTodo = () => {
+    props.fetchTodos();
+  };
+
   return (
     <div>
       <div>ToDos</div>
-      <button onClick={fetchTodos}>list</button>
+      <button onClick={handleTodo}>list</button>
     </div>
   );
 };

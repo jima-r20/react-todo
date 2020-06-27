@@ -6,10 +6,10 @@ import { signIn } from '../../actions';
 
 import baseUrl from '../../apis/baseUrl';
 
-const SignIn = () => {
+const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();
 
-  const onSubmit = async (formValues, props) => {
+  const onSubmit = async (formValues) => {
     // ログインフォームのemailをREST APIのログイン処理ようにusernameに変更
     // /api/login/にログインのリクエストを送信し、レスポンスを取得
     // sessionStorageにセッション情報を格納
@@ -23,8 +23,8 @@ const SignIn = () => {
       sessionStorage.setItem('token', response.data.token);
 
       //この辺うまくいかない(action creatorに伝わるけどreducerにdispatchできない)
-      // const userId = sessionStorage.getItem('userId');
-      // signIn(userId);
+      const userId = sessionStorage.getItem('userId');
+      props.signIn(userId);
 
       history.push('/todos');
     } catch (err) {
