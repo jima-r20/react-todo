@@ -3,20 +3,38 @@ import { connect } from 'react-redux';
 import { fetchTodos } from '../../actions';
 
 const TodoList = (props) => {
-  // useEffect(() => {
-  //   fetchTodos();
-  // }, []);
-
-  const handleTodo = () => {
+  useEffect(() => {
     props.fetchTodos();
+  }, []);
+
+  // stateからtodo一覧を取得し表示
+  const renderList = () => {
+    // @TODO
+    // 表示順は "todo.id" が大きい方から順に表示したい
+    // → まだできていない
+    return props.todos.map((todo) => {
+      return (
+        <div className="item" key={todo.id}>
+          <div className="ui avatar image">{todo.user.display_name}</div>
+          <div className="content">
+            <div className="header">{todo.title}</div>
+            <div className="discription">{todo.content}</div>
+          </div>
+        </div>
+      );
+    });
   };
 
   return (
     <div>
       <div>ToDos</div>
-      <button onClick={handleTodo}>list</button>
+      <div className="ui celled list">{renderList()}</div>
     </div>
   );
 };
 
-export default connect(null, { fetchTodos })(TodoList);
+const mapStateToProps = (state) => {
+  return { todos: Object.values(state.todo) };
+};
+
+export default connect(mapStateToProps, { fetchTodos })(TodoList);

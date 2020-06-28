@@ -22,6 +22,14 @@ export const signIn = (params) => async (dispatch) => {
     const res = await baseUrl.post('/api/login/', params);
     sessionStorage.setItem('userId', res.data.id);
     sessionStorage.setItem('token', res.data.token);
+
+    // @TODO
+    // ページをリフレッシュするとセッション情報は残るが、
+    // ユーザ情報のstateがリセットされる問題が残っている
+    // Header.jsでuseEffectを使えばなんとかなりそう？
+    // → signInの引数的にsessionStorage系はactionに入れない方がやりやすいかも
+    // → 引数をuserIdにした方がいい？
+
     const userId = sessionStorage.getItem('userId');
     const response = await baseUrl.get(`/api/users/${userId}`);
     dispatch({ type: SIGN_IN, payload: response.data });
