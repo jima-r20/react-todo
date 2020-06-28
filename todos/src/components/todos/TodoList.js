@@ -18,6 +18,9 @@ const TodoList = (props) => {
     // 表示順は "todo.id" が大きい方から順に表示したい
     // → まだできていない
     // ページをリロードするとユーザ情報のstateがリセットされる問題がある
+    //
+    // @TODO
+    // 新規Todo投稿後に一覧画面に遷移すると、Todoが４件される問題がある(通常は３件)
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
         return (
@@ -38,8 +41,17 @@ const TodoList = (props) => {
 
   return (
     <div>
-      <div>ToDo List</div>
+      <div>
+        <div className="ui left floated">ToDo List</div>
+        <Link to="/todos/new" className="ui button positive">
+          Create New Todo
+        </Link>
+      </div>
       <div className="ui celled list">{renderList()}</div>
+      <div>
+        <i className="angle left icon" />
+        <i className="angle right icon" />
+      </div>
     </div>
   );
 };

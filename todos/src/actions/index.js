@@ -1,6 +1,13 @@
 import baseUrl from '../apis/baseUrl';
 import history from '../history';
-import { SIGN_UP, SIGN_IN, SIGN_OUT, FETCH_TODOS, FETCH_TODO } from './types';
+import {
+  SIGN_UP,
+  SIGN_IN,
+  SIGN_OUT,
+  FETCH_TODOS,
+  FETCH_TODO,
+  CREATE_TODO,
+} from './types';
 
 // 新規登録
 export const signUp = (formValues) => async (dispatch) => {
@@ -57,4 +64,17 @@ export const fetchTodos = () => async (dispatch) => {
 export const fetchTodo = (id) => async (dispatch) => {
   const response = await baseUrl.get(`/api/todos/${id}`);
   dispatch({ type: FETCH_TODO, payload: response.data });
+};
+
+// Todoの作成
+export const createTodo = (params) => async (dispatch) => {
+  const token = sessionStorage.getItem('token');
+  const response = await baseUrl.post('/api/todos/', params, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+  console.log(response.data);
+  dispatch({ type: CREATE_TODO, payload: response.data });
+  history.push('/todos');
 };
