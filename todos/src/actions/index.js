@@ -56,6 +56,5 @@ export const fetchTodos = () => async (dispatch) => {
 // Todoリスト個別取得
 export const fetchTodo = (id) => async (dispatch) => {
   const response = await baseUrl.get(`/api/todos/${id}`);
-  console.log(response);
   dispatch({ type: FETCH_TODO, payload: response.data });
 };

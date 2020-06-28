@@ -7,7 +7,7 @@ const TodoList = (props) => {
   const { todos, isSignedIn, fetchTodos } = props;
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       fetchTodos();
     }
   }, []);
@@ -18,16 +18,16 @@ const TodoList = (props) => {
     // 表示順は "todo.id" が大きい方から順に表示したい
     // → まだできていない
     // ページをリロードするとユーザ情報のstateがリセットされる問題がある
-    if (isSignedIn) {
+    if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
         return (
           <div className="item" key={todo.id}>
             <div className="ui avatar image">{todo.user.display_name}</div>
             <div className="content">
-              <div>TODO Number: {todo.id}</div>
               <Link to={`todos/${todo.id}`} className="header">
-                Title: {todo.title}
+                TODO Number: {todo.id}
               </Link>
+              <div>TODO Title: {todo.title}</div>
               <div className="discription">Discription: {todo.content}</div>
             </div>
           </div>

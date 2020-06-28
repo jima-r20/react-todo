@@ -1,10 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import history from '../../history';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
-
-import baseUrl from '../../apis/baseUrl';
 
 const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();

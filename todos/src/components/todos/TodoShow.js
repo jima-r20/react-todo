@@ -14,9 +14,12 @@ const TodoShow = (props) => {
   }, []);
 
   // Todoの中身表示
+  // @TODO: ページをリロードするとユーザ情報のstateがリセットされる問題がある
   const renderTodo = () => {
-    console.log(todos);
-    if (isSignedIn) {
+    // if (isSignedIn === null && sessionStorage.getItem('userId') !== null) {
+    //   return <div>Loading...</div>;
+    // }
+    if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
         <div>
           <div>Todo Number: {todos.id}</div>
@@ -30,7 +33,7 @@ const TodoShow = (props) => {
 
   return (
     <div>
-      Todo Show
+      <h2>Todo Show</h2>
       {renderTodo()}
     </div>
   );
