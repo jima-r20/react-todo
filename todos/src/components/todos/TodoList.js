@@ -4,8 +4,12 @@ import { fetchTodos } from '../../actions';
 import { Link } from 'react-router-dom';
 
 const TodoList = (props) => {
+  const { todos, isSignedIn, fetchTodos } = props;
+
   useEffect(() => {
-    props.fetchTodos();
+    if (isSignedIn) {
+      fetchTodos();
+    }
   }, []);
 
   // stateからtodo一覧を取得し表示
@@ -14,14 +18,16 @@ const TodoList = (props) => {
     // 表示順は "todo.id" が大きい方から順に表示したい
     // → まだできていない
     // ページをリロードするとユーザ情報のstateがリセットされる問題がある
-    if (props.isSignedIn) {
-      return props.todos.map((todo) => {
+    if (isSignedIn) {
+      return todos.map((todo) => {
         return (
           <div className="item" key={todo.id}>
             <div className="ui avatar image">{todo.user.display_name}</div>
             <div className="content">
               <div>TODO Number: {todo.id}</div>
-              <div className="header">Title: {todo.title}</div>
+              <Link to={`todos/${todo.id}`} className="header">
+                Title: {todo.title}
+              </Link>
               <div className="discription">Discription: {todo.content}</div>
             </div>
           </div>
