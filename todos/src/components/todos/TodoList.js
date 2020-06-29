@@ -12,7 +12,7 @@ const TodoList = (props) => {
     }
   }, []);
 
-  const renderButton = (userId, todoId) => {
+  const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
         <div className="ui right floated">
@@ -50,7 +50,7 @@ const TodoList = (props) => {
             <div className="extra content">
               <div>
                 Author: {todo.user.display_name}
-                {renderButton(todo.user.id, todo.id)}
+                {renderAdmin(todo.user.id, todo.id)}
               </div>
             </div>
           </div>

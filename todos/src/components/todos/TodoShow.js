@@ -4,7 +4,7 @@ import { fetchTodo } from '../../actions';
 
 const TodoShow = (props) => {
   const { id } = props.match.params;
-  const { todos, isSignedIn, fetchTodo } = props;
+  const { todo, isSignedIn, fetchTodo } = props;
 
   // 選択したTodoのデータ取得
   useEffect(() => {
@@ -21,12 +21,16 @@ const TodoShow = (props) => {
     // }
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
-        <div>
-          <div>No. {todos.id}</div>
-          <div>Created User: {todos.user.display_name}</div>
-          <div>Title: {todos.title}</div>
-          <div>Discription: {todos.content}</div>
-        </div>
+        <React.Fragment>
+          {todo ? (
+            <div>
+              <div>No. {todo.id}</div>
+              <div>Created User: {todo.user.display_name}</div>
+              <div>Title: {todo.title}</div>
+              <div>Discription: {todo.content}</div>
+            </div>
+          ) : null}
+        </React.Fragment>
       );
     }
   };
@@ -41,7 +45,7 @@ const TodoShow = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    todos: state.todo[ownProps.match.params.id],
+    todo: state.todo[ownProps.match.params.id],
     isSignedIn: state.auth.isSignedIn,
   };
 };
