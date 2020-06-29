@@ -22,10 +22,10 @@ const TodoShow = (props) => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
         <div>
-          <div>Todo Number: {todos.id}</div>
+          <div>No. {todos.id}</div>
           <div>Created User: {todos.user.display_name}</div>
-          <div>Todo Title: {todos.title}</div>
-          <div>Todo Discription: {todos.content}</div>
+          <div>Title: {todos.title}</div>
+          <div>Discription: {todos.content}</div>
         </div>
       );
     }

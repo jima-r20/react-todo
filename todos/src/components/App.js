@@ -8,6 +8,7 @@ import SignIn from './ authentication/SignIn';
 import TodoList from './todos/TodoList';
 import TodoShow from './todos/TodoShow';
 import TodoCreate from './todos/TodoCreate';
+import TodoEdit from './todos/TodoEdit';
 import history from '../history';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/signin" exact component={SignIn} />
             <Route path="/todos" exact component={TodoList} />
             <Route path="/todos/new" exact component={TodoCreate} />
+            <Route path="/todos/edit/:id" exact component={TodoEdit} />
             <Route path="/todos/:id" exact component={TodoShow} />
           </Switch>
         </div>

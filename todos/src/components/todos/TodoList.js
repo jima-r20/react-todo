@@ -12,6 +12,21 @@ const TodoList = (props) => {
     }
   }, []);
 
+  const renderButton = (userId, todoId) => {
+    if (userId === Number(sessionStorage.getItem('userId'))) {
+      return (
+        <div className="ui right floated">
+          <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
+            Edit
+          </Link>
+          <div className="ui tiny button negative">Delete</div>
+        </div>
+      );
+    } else {
+      return;
+    }
+  };
+
   // stateからtodo一覧を取得し表示
   const renderList = () => {
     // @TODO
@@ -24,14 +39,19 @@ const TodoList = (props) => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
         return (
-          <div className="item" key={todo.id}>
-            <div className="ui avatar image">{todo.user.display_name}</div>
+          <div className="ui card" key={todo.id}>
             <div className="content">
               <Link to={`todos/${todo.id}`} className="header">
-                TODO Number: {todo.id}
+                No. {todo.id} <br />
+                Title: {todo.title}
               </Link>
-              <div>TODO Title: {todo.title}</div>
               <div className="discription">Discription: {todo.content}</div>
+            </div>
+            <div className="extra content">
+              <div>
+                Author: {todo.user.display_name}
+                {renderButton(todo.user.id, todo.id)}
+              </div>
             </div>
           </div>
         );
@@ -47,7 +67,8 @@ const TodoList = (props) => {
           Create New Todo
         </Link>
       </div>
-      <div className="ui celled list">{renderList()}</div>
+      <br />
+      <div>{renderList()}</div>
       <div>
         <i className="angle left icon" />
         <i className="angle right icon" />
