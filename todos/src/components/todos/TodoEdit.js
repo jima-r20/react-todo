@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
-import { fetchTodo } from '../../actions';
+import { fetchTodo, editTodo } from '../../actions';
 
 const TodoEdit = (props) => {
   const { register, errors, handleSubmit } = useForm();
   const { id } = props.match.params;
-  const { fetchTodo, todo } = props;
-  console.log(props);
+  const { todo, fetchTodo, editTodo } = props;
 
   // 選択したTodoの内容取得
   useEffect(() => {
@@ -17,7 +15,11 @@ const TodoEdit = (props) => {
   }, []);
 
   const onSubmit = (formValues) => {
-    console.log(formValues);
+    // @TODO
+    // formからis_finishedを渡せるようにする
+    const params = { ...formValues, is_finished: false };
+
+    editTodo(id, params);
   };
 
   return (
@@ -44,7 +46,7 @@ const TodoEdit = (props) => {
         ) : null}
       </div>
       <button className="ui button positive" type="submit">
-        Create
+        Update
       </button>
     </form>
   );
@@ -54,4 +56,4 @@ const mapStateToProps = (state, ownProps) => {
   return { todo: state.todo[ownProps.match.params.id] };
 };
 
-export default connect(mapStateToProps, { fetchTodo })(TodoEdit);
+export default connect(mapStateToProps, { fetchTodo, editTodo })(TodoEdit);

@@ -7,6 +7,7 @@ import {
   FETCH_TODOS,
   FETCH_TODO,
   CREATE_TODO,
+  EDIT_TODO,
 } from './types';
 
 // 新規登録
@@ -74,7 +75,18 @@ export const createTodo = (params) => async (dispatch) => {
       Authorization: `Token ${token}`,
     },
   });
-  console.log(response.data);
   dispatch({ type: CREATE_TODO, payload: response.data });
+  history.push('/todos');
+};
+
+// Todoの編集
+export const editTodo = (todoId, params) => async (dispatch) => {
+  const token = sessionStorage.getItem('token');
+  const response = await baseUrl.patch(`/api/todos/${todoId}/`, params, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+  dispatch({ type: EDIT_TODO, payload: response.data });
   history.push('/todos');
 };
