@@ -8,6 +8,7 @@ import {
   FETCH_TODO,
   CREATE_TODO,
   EDIT_TODO,
+  DELETE_TODO,
 } from './types';
 
 // 新規登録
@@ -88,5 +89,15 @@ export const editTodo = (todoId, params) => async (dispatch) => {
     },
   });
   dispatch({ type: EDIT_TODO, payload: response.data });
+  history.push('/todos');
+};
+
+// Todoの削除
+export const deleteTodo = (id) => async (dispatch) => {
+  const token = sessionStorage.getItem('token');
+  await baseUrl.delete(`/api/todos/${id}`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+  dispatch({ type: DELETE_TODO, payload: id });
   history.push('/todos');
 };
