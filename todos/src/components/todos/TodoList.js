@@ -19,7 +19,12 @@ const TodoList = (props) => {
           <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
             Edit
           </Link>
-          <div className="ui tiny button negative">Delete</div>
+          <Link
+            to={`/todos/delete/${todoId}`}
+            className="ui tiny button negative"
+          >
+            Delete
+          </Link>
         </div>
       );
     } else {

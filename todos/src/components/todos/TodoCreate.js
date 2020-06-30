@@ -22,7 +22,7 @@ const TodoCreate = (props) => {
       <div style={{ color: 'red' }}>
         {errors.title &&
           errors.title.type === 'required' &&
-          'Email is required'}
+          'Title is required'}
       </div>
       <div className="field">
         <label>Content</label>
