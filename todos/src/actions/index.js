@@ -106,6 +106,11 @@ export const deleteTodo = (id) => async (dispatch) => {
   history.push('/todos');
 };
 
+// @TODO
+// 下記のaction creatorが呼び出されると、下記で１回、
+// ページ遷移後にtodoリストを読み込むために１回GETリクエストを送ることになってしまう
+// →　合計ページの再レンダリング時に２回GETしてしまう
+
 // 次ページへ遷移
 export const moveNextPage = (currentPage) => async (dispatch) => {
   const netxPage = currentPage + 1;
