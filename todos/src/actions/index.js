@@ -9,6 +9,8 @@ import {
   CREATE_TODO,
   EDIT_TODO,
   DELETE_TODO,
+  NEXT_PAGE,
+  PREVIOUS_PAGE,
 } from './types';
 
 // 新規登録
@@ -57,8 +59,10 @@ export const signOut = () => {
 };
 
 // Todoリスト一覧取得
-export const fetchTodos = () => async (dispatch) => {
-  const response = await baseUrl.get('/api/todos/');
+export const fetchTodos = (currentPage) => async (dispatch) => {
+  const response = await baseUrl.get('/api/todos/', {
+    params: { page: currentPage },
+  });
   dispatch({ type: FETCH_TODOS, payload: response.data });
 };
 
@@ -100,4 +104,26 @@ export const deleteTodo = (id) => async (dispatch) => {
   });
   dispatch({ type: DELETE_TODO, payload: id });
   history.push('/todos');
+};
+
+// 次ページへ遷移
+export const moveNextPage = (currentPage) => async (dispatch) => {
+  const netxPage = currentPage + 1;
+  const response = await baseUrl.get('/api/todos/', {
+    params: { page: netxPage },
+  });
+  console.log(response);
+  console.log(response.config.params.page);
+  dispatch({ type: NEXT_PAGE, payload: response });
+};
+
+// 前ページへ遷移
+export const movePreviousPage = (currentPage) => async (dispatch) => {
+  const previousPage = currentPage - 1;
+  const response = await baseUrl.get('/api/todos/', {
+    params: { page: previousPage },
+  });
+  console.log(response);
+  console.log(response.config.params.page);
+  dispatch({ type: PREVIOUS_PAGE, payload: response });
 };

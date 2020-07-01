@@ -10,9 +10,10 @@ import {
 export default (state = {}, action) => {
   switch (action.type) {
     case FETCH_TODOS:
-      return { ...state, ..._.mapKeys(action.payload.results, 'id') };
+      return {
+        ..._.mapKeys(action.payload.results, 'id'),
+      };
     case FETCH_TODO:
-      // return state;
       return { ...state, [action.payload.id]: action.payload };
     case CREATE_TODO:
       return { ...state, [action.payload.id]: action.payload };

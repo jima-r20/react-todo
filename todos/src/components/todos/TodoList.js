@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchTodos } from '../../actions';
+import { fetchTodos, moveNextPage, movePreviousPage } from '../../actions';
 import { Link } from 'react-router-dom';
 
 const TodoList = (props) => {
-  const { todos, isSignedIn, fetchTodos } = props;
+  const {
+    todos,
+    isSignedIn,
+    page,
+    nextPage,
+    previousPage,
+    fetchTodos,
+    moveNextPage,
+    movePreviousPage,
+  } = props;
 
   useEffect(() => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
-      fetchTodos();
+      fetchTodos(page);
     }
-  }, []);
+  }, [page]);
 
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
@@ -64,6 +73,65 @@ const TodoList = (props) => {
     }
   };
 
+  // // 前ページへのページネーション
+  // const handlePreviousButton = () => {
+  //   if (page === 1) {
+  //     return;
+  //   }
+  //   movePreviousPage(page);
+  // };
+
+  // // 次ページへのページネーション
+  // const handleNextButton = () => {
+  //   if (page === 3) {
+  //     return;
+  //   }
+  //   moveNextPage(page);
+  // };
+
+  const renderPagenation = () => {
+    if (previousPage === null) {
+      return (
+        <div>
+          <button
+            onClick={() => movePreviousPage(page)}
+            className="ui button disabled"
+          >
+            <i className="angle left icon" />
+          </button>
+          <button onClick={() => moveNextPage(page)} className="ui button">
+            <i className="angle right icon" />
+          </button>
+        </div>
+      );
+    } else if (previousPage !== null && nextPage !== null) {
+      return (
+        <div>
+          <button onClick={() => movePreviousPage(page)} className="ui button">
+            <i className="angle left icon" />
+          </button>
+          <button onClick={() => moveNextPage(page)} className="ui button">
+            <i className="angle right icon" />
+          </button>
+        </div>
+      );
+    } else if (nextPage === null) {
+      return (
+        <div>
+          <button onClick={() => movePreviousPage(page)} className="ui button">
+            <i className="angle left icon" />
+          </button>
+          <button
+            onClick={() => moveNextPage(page)}
+            className="ui button disabled"
+          >
+            <i className="angle right icon" />
+          </button>
+        </div>
+      );
+    }
+  };
+
   return (
     <div>
       <div>
@@ -74,10 +142,8 @@ const TodoList = (props) => {
       </div>
       <br />
       <div>{renderList()}</div>
-      <div>
-        <i className="angle left icon" />
-        <i className="angle right icon" />
-      </div>
+      <br />
+      {renderPagenation()}
     </div>
   );
 };
@@ -86,7 +152,14 @@ const mapStateToProps = (state) => {
   return {
     todos: Object.values(state.todo),
     isSignedIn: state.auth.isSignedIn,
+    page: state.page.currentPage,
+    nextPage: state.page.nextPage,
+    previousPage: state.page.previousPage,
   };
 };
 
-export default connect(mapStateToProps, { fetchTodos })(TodoList);
+export default connect(mapStateToProps, {
+  fetchTodos,
+  moveNextPage,
+  movePreviousPage,
+})(TodoList);
