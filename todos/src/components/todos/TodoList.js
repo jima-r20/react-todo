@@ -150,7 +150,7 @@ const TodoList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    todos: Object.values(state.todo),
+    todos: Object.values(state.todo).reverse(),
     isSignedIn: state.auth.isSignedIn,
     page: state.page.currentPage,
     nextPage: state.page.nextPage,
