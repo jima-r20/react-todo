@@ -5,6 +5,7 @@ const INITIAL_STATE = { currentPage: 1, previousPage: null };
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case NEXT_PAGE:
+    case PREVIOUS_PAGE:
       return {
         ...state,
         currentPage: action.payload.config.params.page,
