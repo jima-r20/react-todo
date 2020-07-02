@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { fetchTodo } from '../../actions';
 
 const TodoShow = (props) => {
@@ -12,6 +14,26 @@ const TodoShow = (props) => {
       fetchTodo(id);
     }
   }, []);
+
+  const renderAdmin = (userId, todoId) => {
+    if (userId === Number(sessionStorage.getItem('userId'))) {
+      return (
+        <div className="ui right floated">
+          <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
+            Edit
+          </Link>
+          <Link
+            to={`/todos/delete/${todoId}`}
+            className="ui tiny button negative"
+          >
+            Delete
+          </Link>
+        </div>
+      );
+    } else {
+      return;
+    }
+  };
 
   // Todoの中身表示
   // @TODO: ページをリロードするとユーザ情報のstateがリセットされる問題がある
@@ -28,6 +50,7 @@ const TodoShow = (props) => {
               <div>Created User: {todo.user.display_name}</div>
               <div>Title: {todo.title}</div>
               <div>Discription: {todo.content}</div>
+              {renderAdmin(todo.user.id, todo.id)}
             </div>
           ) : null}
         </React.Fragment>

@@ -117,8 +117,6 @@ export const moveNextPage = (currentPage) => async (dispatch) => {
   const response = await baseUrl.get('/api/todos/', {
     params: { page: netxPage },
   });
-  console.log(response);
-  console.log(response.config.params.page);
   dispatch({ type: NEXT_PAGE, payload: response });
 };
 
@@ -128,7 +126,5 @@ export const movePreviousPage = (currentPage) => async (dispatch) => {
   const response = await baseUrl.get('/api/todos/', {
     params: { page: previousPage },
   });
-  console.log(response);
-  console.log(response.config.params.page);
   dispatch({ type: PREVIOUS_PAGE, payload: response });
 };

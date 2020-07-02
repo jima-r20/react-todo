@@ -44,12 +44,7 @@ const TodoList = (props) => {
   // stateからtodo一覧を取得し表示
   const renderList = () => {
     // @TODO
-    // 表示順は "todo.id" が大きい方から順に表示したい
-    // → まだできていない
     // ページをリロードするとユーザ情報のstateがリセットされる問題がある
-    //
-    // @TODO
-    // 新規Todo投稿後に一覧画面に遷移すると、Todoが４件される問題がある(通常は３件)
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
         return (
@@ -72,22 +67,6 @@ const TodoList = (props) => {
       });
     }
   };
-
-  // // 前ページへのページネーション
-  // const handlePreviousButton = () => {
-  //   if (page === 1) {
-  //     return;
-  //   }
-  //   movePreviousPage(page);
-  // };
-
-  // // 次ページへのページネーション
-  // const handleNextButton = () => {
-  //   if (page === 3) {
-  //     return;
-  //   }
-  //   moveNextPage(page);
-  // };
 
   const renderPagenation = () => {
     if (previousPage === null) {
