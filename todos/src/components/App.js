@@ -22,7 +22,7 @@ const App = () => {
             <div className="column">
               <img className="ui image" src="To do list-amico.png" />
             </div>
-            <div className="column" style={{ width: '80vh' }}>
+            <div className="column" style={{ width: '80vh', margin: '0 auto' }}>
               <Switch>
                 <Route path="/" exact component={MainPage} />
                 <Route path="/signup" exact component={SignUp} />

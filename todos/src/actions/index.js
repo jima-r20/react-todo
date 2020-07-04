@@ -48,6 +48,7 @@ export const signIn = (params) => async (dispatch) => {
     history.push('/todos');
   } catch (err) {
     console.log('Login error');
+    throw err;
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
@@ -6,17 +6,30 @@ import { signIn } from '../../actions';
 const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();
   const { signIn } = props;
-  // const [message, setMessege] = useState('');
+  const [message, setMessege] = useState(''); // ログインエラー時のメッセージ
+  const [submitButton, setSubmitButton] = useState('ui primary button'); // ボタンクリック時のスタイル変更用
 
   const onSubmit = async (formValues) => {
     // ログインフォームのemailをREST APIのログイン処理用にusernameに変更
     const { email, password } = formValues;
     const params = { username: email, password };
-    await signIn(params);
+    setSubmitButton('ui disabled primary button');
+    setMessege('');
+    try {
+      await signIn(params);
+    } catch (err) {
+      setSubmitButton('ui primary button');
+      setMessege(
+        'LOGIN ERROR: Email or Password is incorrect. Please enter the correct registration information.'
+      );
+    }
   };
 
+  useEffect(() => {}, [submitButton, message]);
+
   return (
-    <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
+      <div className="ui error message">{message}</div>
       <div className="field">
         <label>Email</label>
         <input
@@ -26,14 +39,14 @@ const SignIn = (props) => {
             pattern: /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/,
           })}
         />
-        <div style={{ color: 'red' }}>
-          {errors.email &&
-            errors.email.type === 'required' &&
-            'Email is required'}
-          {errors.email &&
-            errors.email.type === 'pattern' &&
-            'This input format is invalid'}
-        </div>
+        {errors.email && errors.email.type === 'required' ? (
+          <div className="ui pointing red basic label">Email is required</div>
+        ) : null}
+        {errors.email && errors.email.type === 'pattern' ? (
+          <div className="ui pointing red basic label">
+            This input format is invalid
+          </div>
+        ) : null}
       </div>
       <div className="field">
         <label>Password</label>
@@ -42,11 +55,13 @@ const SignIn = (props) => {
           name="password"
           ref={register({ required: true })}
         />
-        <div style={{ color: 'red' }}>
-          {errors.password && 'Password is required'}
-        </div>
+        {errors.password ? (
+          <div className="ui pointing red basic label">
+            Password is required
+          </div>
+        ) : null}
       </div>
-      <button className="ui button primary" type="submit">
+      <button className={submitButton} type="submit">
         Sign In
       </button>
     </form>
