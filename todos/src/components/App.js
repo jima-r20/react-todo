@@ -14,21 +14,28 @@ import history from '../history';
 
 const App = () => {
   return (
-    <div className="ui container">
+    <div style={{ backgroundColor: '#eee', height: '100vh' }}>
       <Router history={history}>
         <div>
           <Header />
-          <Switch>
-            <Route path="/" exact component={MainPage} />
-            <Route path="/signup" exact component={SignUp} />
-            <Route path="/signup/result" exact component={SignUpResult} />
-            <Route path="/signin" exact component={SignIn} />
-            <Route path="/todos" exact component={TodoList} />
-            <Route path="/todos/new" exact component={TodoCreate} />
-            <Route path="/todos/edit/:id" exact component={TodoEdit} />
-            <Route path="/todos/delete/:id" exact component={TodoDelete} />
-            <Route path="/todos/:id" exact component={TodoShow} />
-          </Switch>
+          <div className="ui two column very relaxed stackable grid">
+            <div className="column">
+              <img className="ui image" src="To do list-amico.png" />
+            </div>
+            <div className="column" style={{ width: '80vh' }}>
+              <Switch>
+                <Route path="/" exact component={MainPage} />
+                <Route path="/signup" exact component={SignUp} />
+                <Route path="/signup/result" exact component={SignUpResult} />
+                <Route path="/signin" exact component={SignIn} />
+                <Route path="/todos" exact component={TodoList} />
+                <Route path="/todos/new" exact component={TodoCreate} />
+                <Route path="/todos/edit/:id" exact component={TodoEdit} />
+                <Route path="/todos/delete/:id" exact component={TodoDelete} />
+                <Route path="/todos/:id" exact component={TodoShow} />
+              </Switch>
+            </div>
+          </div>
         </div>
       </Router>
     </div>

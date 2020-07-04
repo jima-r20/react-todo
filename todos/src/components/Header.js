@@ -15,17 +15,22 @@ const Header = (props) => {
     if (props.isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
         <div className="ui secondary pointing menu">
-          <Link to="/todos" className="item">
+          <Link to="/todos" className="item ui large header">
             ToDo
           </Link>
           <div className="right menu">
-            <Link
-              to="/"
-              className="ui button basic red"
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </Link>
+            <div className="item">
+              <Link
+                to="/"
+                className="ui animated fade inverted button red"
+                onClick={handleSignOut}
+              >
+                <div className="visible content">Sign Out</div>
+                <div className="hidden content">
+                  <i className="sign-out icon"></i>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       );
@@ -33,16 +38,26 @@ const Header = (props) => {
       // ログインしていない場合
       return (
         <div className="ui secondary pointing menu">
-          <Link to="/" className="item">
+          <Link to="/" className="item ui large header">
             ToDo
           </Link>
           <div className="right menu">
-            <Link to="/signin" className="ui button primary">
-              Sign In
-            </Link>
-            <Link to="/signup" className="ui button basic blue">
-              Sign Up
-            </Link>
+            <div className="item">
+              <Link to="/signin" className="ui animated fade button primary">
+                <div className="visible content">Sign In</div>
+                <div className="hidden content">
+                  <i className="sign-in icon"></i>
+                </div>
+              </Link>
+            </div>
+            <div className="item">
+              <Link to="/signup" className="ui animated fade button basic blue">
+                <div className="visible content">Sign Up</div>
+                <div className="hidden content">
+                  <i className="user plus icon"></i>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       );

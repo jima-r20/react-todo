@@ -18,7 +18,7 @@ const TodoShow = (props) => {
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
-        <div className="ui right floated">
+        <div>
           <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
             Edit
           </Link>

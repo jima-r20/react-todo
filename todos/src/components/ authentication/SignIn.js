@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
 
 const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();
+  const { signIn } = props;
+  // const [message, setMessege] = useState('');
 
   const onSubmit = async (formValues) => {
     // ログインフォームのemailをREST APIのログイン処理用にusernameに変更
     const { email, password } = formValues;
     const params = { username: email, password };
-    props.signIn(params);
+    await signIn(params);
   };
 
   return (
