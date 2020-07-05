@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { signUp } from '../../actions';
@@ -6,15 +6,27 @@ import { signUp } from '../../actions';
 const SignUp = (props) => {
   const { signUp } = props;
   const { register, errors, handleSubmit } = useForm();
+  const [failureMessage, setFeilureMessage] = useState('');
+  const [submitButton, setSubmitButton] = useState('ui primary button');
 
-  const onSubmit = (formValues) => {
+  const onSubmit = async (formValues) => {
     const data = { ...formValues, about: '', avatar_url: '' };
-    signUp(data);
+    setSubmitButton('ui disabled primary button');
+    setFeilureMessage('');
+    try {
+      await signUp(data);
+    } catch (err) {
+      setSubmitButton('ui primary button');
+      setFeilureMessage('RESISTATION ERROR: This email is already registered');
+    }
   };
+
+  useEffect(() => {}, [submitButton, failureMessage]);
 
   // 新規登録フォーム
   return (
-    <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
+      <div className="ui error message">{failureMessage}</div>
       <div className="field">
         <label>
           Email <span style={{ color: 'red' }}>(Required)</span>
@@ -26,14 +38,14 @@ const SignUp = (props) => {
             pattern: /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/,
           })}
         />
-        <div style={{ color: 'red' }}>
-          {errors.email &&
-            errors.email.type === 'required' &&
-            'Email is required'}
-          {errors.email &&
-            errors.email.type === 'pattern' &&
-            'This input format is invalid'}
-        </div>
+        {errors.email && errors.email.type === 'required' ? (
+          <div className="ui pointing red basic label">Email is required</div>
+        ) : null}
+        {errors.email && errors.email.type === 'pattern' ? (
+          <div className="ui pointing red basic label">
+            This input format is invalid
+          </div>
+        ) : null}
       </div>
 
       <div className="field">
@@ -44,9 +56,11 @@ const SignUp = (props) => {
           name="display_name"
           ref={register({ required: true, maxLength: 20 })}
         />
-        <div style={{ color: 'red' }}>
-          {errors.display_name && 'Display Name is required'}
-        </div>
+        {errors.display_name ? (
+          <div className="ui pointing red basic label">
+            Display Name is required
+          </div>
+        ) : null}
       </div>
 
       <div className="field">
@@ -57,18 +71,19 @@ const SignUp = (props) => {
           name="password"
           ref={register({ required: true, minLength: 8 })}
         />
-        <div style={{ color: 'red' }}>
-          {errors.password &&
-            errors.password.type === 'required' &&
-            'Password is required'}
-          {errors.password &&
-            errors.password.type === 'minLength' &&
-            'Password must be at least 8 characters'}
-          {console.log(errors.password)}
-        </div>
+        {errors.password && errors.password.type === 'required' ? (
+          <div className="ui pointing red basic label">
+            Password is required
+          </div>
+        ) : null}
+        {errors.display_name && errors.password.type === 'minLength' ? (
+          <div className="ui pointing red basic label">
+            Password must be at least 8 characters
+          </div>
+        ) : null}
       </div>
 
-      <button className="ui button primary" type="submit">
+      <button className={submitButton} type="submit">
         Sign Up
       </button>
     </form>
