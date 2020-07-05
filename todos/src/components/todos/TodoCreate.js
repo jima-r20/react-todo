@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 
@@ -7,28 +7,41 @@ import { createTodo } from '../../actions';
 const TodoCreate = (props) => {
   const { register, errors, handleSubmit } = useForm();
   const { createTodo } = props;
+  const [failureMessage, setFailureMessege] = useState(''); // ログインエラー時のメッセージ
+  const [submitButton, setSubmitButton] = useState('ui olive button'); // ボタンクリック時のスタイル変更用
 
-  const onSubmit = (formValues) => {
+  const onSubmit = async (formValues) => {
     const params = { ...formValues, is_finished: false };
-    createTodo(params);
+    setSubmitButton('ui disabled olive button');
+    setFailureMessege('');
+    try {
+      await createTodo(params);
+    } catch (err) {
+      setSubmitButton('ui olive button');
+      setFailureMessege('CREATE ERROR: Please try again to create new Todo');
+    }
   };
 
+  useEffect(() => {}, [submitButton, failureMessage]);
+
   return (
-    <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
+      <div className="ui error message">{failureMessage}</div>
       <div className="field">
         <label>Title</label>
         <input name="title" ref={register({ required: true })} />
-      </div>
-      <div style={{ color: 'red' }}>
-        {errors.title &&
-          errors.title.type === 'required' &&
-          'Title is required'}
+        {errors.title ? (
+          <div className="ui pointing red basic label">Title is required</div>
+        ) : null}
       </div>
       <div className="field">
         <label>Content</label>
-        <textarea name="content" ref={register} />
+        <textarea name="content" ref={register({ required: true })} />
+        {errors.content ? (
+          <div className="ui pointing red basic label">Content is required</div>
+        ) : null}
       </div>
-      <button className="ui button positive" type="submit">
+      <button className={submitButton} type="submit">
         Create
       </button>
     </form>

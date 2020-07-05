@@ -6,7 +6,7 @@ import { signIn } from '../../actions';
 const SignIn = (props) => {
   const { register, errors, handleSubmit } = useForm();
   const { signIn } = props;
-  const [message, setMessege] = useState(''); // ログインエラー時のメッセージ
+  const [failureMessage, setFailureMessege] = useState(''); // ログインエラー時のメッセージ
   const [submitButton, setSubmitButton] = useState('ui primary button'); // ボタンクリック時のスタイル変更用
 
   const onSubmit = async (formValues) => {
@@ -14,22 +14,22 @@ const SignIn = (props) => {
     const { email, password } = formValues;
     const params = { username: email, password };
     setSubmitButton('ui disabled primary button');
-    setMessege('');
+    setFailureMessege('');
     try {
       await signIn(params);
     } catch (err) {
       setSubmitButton('ui primary button');
-      setMessege(
+      setFailureMessege(
         'LOGIN ERROR: Email or Password is incorrect. Please enter the correct registration information.'
       );
     }
   };
 
-  useEffect(() => {}, [submitButton, message]);
+  useEffect(() => {}, [submitButton, failureMessage]);
 
   return (
     <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
-      <div className="ui error message">{message}</div>
+      <div className="ui error message">{failureMessage}</div>
       <div className="field">
         <label>Email</label>
         <input

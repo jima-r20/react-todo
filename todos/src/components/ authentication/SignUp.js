@@ -6,18 +6,18 @@ import { signUp } from '../../actions';
 const SignUp = (props) => {
   const { signUp } = props;
   const { register, errors, handleSubmit } = useForm();
-  const [failureMessage, setFeilureMessage] = useState('');
+  const [failureMessage, setFailureMessage] = useState('');
   const [submitButton, setSubmitButton] = useState('ui primary button');
 
   const onSubmit = async (formValues) => {
     const data = { ...formValues, about: '', avatar_url: '' };
     setSubmitButton('ui disabled primary button');
-    setFeilureMessage('');
+    setFailureMessage('');
     try {
       await signUp(data);
     } catch (err) {
       setSubmitButton('ui primary button');
-      setFeilureMessage('RESISTATION ERROR: This email is already registered');
+      setFailureMessage('RESISTATION ERROR: This email is already registered');
     }
   };
 

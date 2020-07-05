@@ -79,14 +79,18 @@ export const fetchTodo = (id) => async (dispatch) => {
 
 // Todoの作成
 export const createTodo = (params) => async (dispatch) => {
-  const token = sessionStorage.getItem('token');
-  const response = await baseUrl.post('/api/todos/', params, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
-  dispatch({ type: CREATE_TODO, payload: response.data });
-  history.push('/todos');
+  try {
+    const token = sessionStorage.getItem('token');
+    const response = await baseUrl.post('/api/todos/', params, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    dispatch({ type: CREATE_TODO, payload: response.data });
+    history.push('/todos');
+  } catch (err) {
+    throw err;
+  }
 };
 
 // Todoの編集
