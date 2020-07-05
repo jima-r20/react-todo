@@ -31,7 +31,15 @@ const ToDoDelete = (props) => {
     if (!todo) {
       return 'Are you sure you want to DELETE this Todo?';
     }
-    return `Are you sure you want to DELETE the Todo with title: [ ${todo.title} ]`;
+    // return `Are you sure you want to DELETE the Todo with title: [ ${todo.title} ]`;
+    return (
+      <div>
+        <div>Are you sure you want to DELETE the Todo with title:</div>
+        <div className="ui large header" style={{ fontWeight: 'bold' }}>
+          [ {todo.title} ]
+        </div>
+      </div>
+    );
   };
 
   return (
