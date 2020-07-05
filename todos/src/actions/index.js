@@ -73,8 +73,12 @@ export const fetchTodos = (currentPage) => async (dispatch) => {
 
 // Todoリスト個別取得
 export const fetchTodo = (id) => async (dispatch) => {
-  const response = await baseUrl.get(`/api/todos/${id}`);
-  dispatch({ type: FETCH_TODO, payload: response.data });
+  try {
+    const response = await baseUrl.get(`/api/todos/${id}`);
+    dispatch({ type: FETCH_TODO, payload: response.data });
+  } catch (err) {
+    throw err;
+  }
 };
 
 // Todoの作成
@@ -95,14 +99,18 @@ export const createTodo = (params) => async (dispatch) => {
 
 // Todoの編集
 export const editTodo = (todoId, params) => async (dispatch) => {
-  const token = sessionStorage.getItem('token');
-  const response = await baseUrl.patch(`/api/todos/${todoId}/`, params, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
-  dispatch({ type: EDIT_TODO, payload: response.data });
-  history.push('/todos');
+  try {
+    const token = sessionStorage.getItem('token');
+    const response = await baseUrl.patch(`/api/todos/${todoId}/`, params, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    dispatch({ type: EDIT_TODO, payload: response.data });
+    history.push('/todos');
+  } catch (err) {
+    throw err;
+  }
 };
 
 // Todoの削除

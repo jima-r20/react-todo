@@ -10,6 +10,8 @@ const TodoShow = (props) => {
 
   // 選択したTodoのデータ取得
   useEffect(() => {
+    // @TODO
+    // 非同期処理にして例外処理を追加する
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       fetchTodo(id);
     }
@@ -78,11 +80,8 @@ const TodoShow = (props) => {
                   <span style={{ fontWeight: 'bold' }}>{todo.content}</span>
                 </div>
                 <br />
-                <Link
-                  to="/todos"
-                  className="ui bottom right attached label basic gray"
-                >
-                  Back to Todo List
+                <Link to="/todos" className="ui bottom right attached label">
+                  <i className="reply icon"></i>Back
                 </Link>
               </div>
               <div>{renderAdmin(todo.user.id, todo.id)}</div>

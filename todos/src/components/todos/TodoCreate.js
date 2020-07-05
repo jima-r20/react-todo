@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { createTodo } from '../../actions';
 
 const TodoCreate = (props) => {
   const { register, errors, handleSubmit } = useForm();
   const { createTodo } = props;
-  const [failureMessage, setFailureMessege] = useState(''); // ログインエラー時のメッセージ
+  const [failureMessage, setFailureMessege] = useState(''); //Todo投稿エラー時のメッセージ
   const [submitButton, setSubmitButton] = useState('ui olive button'); // ボタンクリック時のスタイル変更用
 
   const onSubmit = async (formValues) => {
@@ -44,6 +45,12 @@ const TodoCreate = (props) => {
       <button className={submitButton} type="submit">
         Create
       </button>
+      <Link to="/todos" className="ui button right floated animated fade">
+        <div className="visible content">
+          <i className="reply icon"></i>
+        </div>
+        <div className="hidden content">Back</div>
+      </Link>
     </form>
   );
 };
