@@ -25,14 +25,23 @@ const TodoList = (props) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
         <div className="ui right floated">
-          <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
-            Edit
+          <Link
+            to={`/todos/edit/${todoId}`}
+            className="ui tiny button primary animated fade"
+          >
+            <div className="visible content">
+              <i className="edit icon"></i>
+            </div>
+            <div className="hidden content">Edit</div>
           </Link>
           <Link
             to={`/todos/delete/${todoId}`}
-            className="ui tiny button negative"
+            className="ui tiny button negative animated fade"
           >
-            Delete
+            <div className="visible content">
+              <i className="trash alternate icon"></i>
+            </div>
+            <div className="hidden content">Delete</div>
           </Link>
         </div>
       );
@@ -48,13 +57,21 @@ const TodoList = (props) => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
         return (
-          <div className="ui card" key={todo.id}>
+          <Link
+            to={`todos/${todo.id}`}
+            className="ui raised link card"
+            key={todo.id}
+          >
             <div className="content">
-              <Link to={`todos/${todo.id}`} className="header">
+              {/* <Link to={`todos/${todo.id}`} className="header"> */}
+              <div className="header">
                 No. {todo.id} <br />
                 Title: {todo.title}
-              </Link>
-              <div className="discription">Discription: {todo.content}</div>
+              </div>
+              {/* </Link> */}
+              <div className="discription" style={{ color: 'gray' }}>
+                Discription: {todo.content}
+              </div>
             </div>
             <div className="extra content">
               <div>
@@ -62,12 +79,13 @@ const TodoList = (props) => {
                 {renderAdmin(todo.user.id, todo.id)}
               </div>
             </div>
-          </div>
+          </Link>
         );
       });
     }
   };
 
+  // ページネーションボタンの活性化・非活性化判別
   const renderPagenation = () => {
     if (previousPage === null) {
       return (
@@ -114,15 +132,18 @@ const TodoList = (props) => {
   return (
     <div>
       <div>
-        <div className="ui left floated">ToDo List</div>
-        <Link to="/todos/new" className="ui button positive">
+        <div className="ui large header" style={{ color: '#48834C' }}>
+          ToDo List
+        </div>
+        <Link to="/todos/new" className="ui button olive">
+          <i className="plus icon"></i>
           Create New Todo
         </Link>
       </div>
       <br />
-      <div>{renderList()}</div>
-      <br />
       {renderPagenation()}
+      <br />
+      <div>{renderList()}</div>
     </div>
   );
 };
