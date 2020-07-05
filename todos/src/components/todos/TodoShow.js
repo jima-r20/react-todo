@@ -19,14 +19,23 @@ const TodoShow = (props) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
         <div>
-          <Link to={`/todos/edit/${todoId}`} className="ui tiny button primary">
-            Edit
+          <Link
+            to={`/todos/edit/${todoId}`}
+            className="ui tiny button primary left floated animated fade"
+          >
+            <div className="visible content">
+              <i className="edit icon"></i>
+            </div>
+            <div className="hidden content">Edit</div>
           </Link>
           <Link
             to={`/todos/delete/${todoId}`}
-            className="ui tiny button negative"
+            className="ui tiny button negative right floated animated fade"
           >
-            Delete
+            <div className="visible content">
+              <i className="trash alternate icon"></i>
+            </div>
+            <div className="hidden content">Delete</div>
           </Link>
         </div>
       );
@@ -46,11 +55,37 @@ const TodoShow = (props) => {
         <React.Fragment>
           {todo ? (
             <div>
-              <div>No. {todo.id}</div>
-              <div>Created User: {todo.user.display_name}</div>
-              <div>Title: {todo.title}</div>
-              <div>Discription: {todo.content}</div>
-              {renderAdmin(todo.user.id, todo.id)}
+              <div className="ui raised segment">
+                <div>
+                  <div className="ui ribbon label">Title</div>
+                  <span className="ui header">{todo.title}</span>
+                </div>
+                <br />
+                <div>
+                  <div className="ui ribbon label">Todo Number</div>
+                  <span style={{ color: 'gray' }}>No. {todo.id}</span>
+                </div>
+                <br />
+                <div>
+                  <div className="ui ribbon label">Created User</div>
+                  <span style={{ color: 'gray' }}>
+                    {todo.user.display_name}
+                  </span>
+                </div>
+                <br />
+                <div>
+                  <div className="ui ribbon label">Description</div>
+                  <span style={{ fontWeight: 'bold' }}>{todo.content}</span>
+                </div>
+                <br />
+                <Link
+                  to="/todos"
+                  className="ui bottom right attached label basic gray"
+                >
+                  Back to Todo List
+                </Link>
+              </div>
+              <div>{renderAdmin(todo.user.id, todo.id)}</div>
             </div>
           ) : null}
         </React.Fragment>
@@ -60,8 +95,11 @@ const TodoShow = (props) => {
 
   return (
     <div>
-      <h2>Todo Show</h2>
+      <div className="ui huge header" style={{ color: '#48834C' }}>
+        Todo Details
+      </div>
       {renderTodo()}
+      <br />
     </div>
   );
 };

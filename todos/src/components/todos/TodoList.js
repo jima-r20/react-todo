@@ -74,10 +74,8 @@ const TodoList = (props) => {
               </div>
             </div>
             <div className="extra content">
-              <div>
-                Author: {todo.user.display_name}
-                {renderAdmin(todo.user.id, todo.id)}
-              </div>
+              Author: {todo.user.display_name}
+              {renderAdmin(todo.user.id, todo.id)}
             </div>
           </Link>
         );
@@ -130,9 +128,9 @@ const TodoList = (props) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <div>
-        <div className="ui large header" style={{ color: '#48834C' }}>
+        <div className="ui huge header" style={{ color: '#48834C' }}>
           ToDo List
         </div>
         <Link to="/todos/new" className="ui button olive">
@@ -143,8 +141,8 @@ const TodoList = (props) => {
       <br />
       {renderPagenation()}
       <br />
-      <div>{renderList()}</div>
-    </div>
+      {renderList()}
+    </React.Fragment>
   );
 };
 
