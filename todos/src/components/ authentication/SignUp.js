@@ -76,7 +76,7 @@ const SignUp = (props) => {
             Password is required
           </div>
         ) : null}
-        {errors.display_name && errors.password.type === 'minLength' ? (
+        {errors.password && errors.password.type === 'minLength' ? (
           <div className="ui pointing red basic label">
             Password must be at least 8 characters
           </div>

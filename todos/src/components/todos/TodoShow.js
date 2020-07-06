@@ -15,7 +15,7 @@ const TodoShow = (props) => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       fetchTodo(id);
     }
-  }, []);
+  }, [isSignedIn, id, fetchTodo]);
 
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {

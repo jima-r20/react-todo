@@ -12,7 +12,7 @@ const ToDoDelete = (props) => {
 
   useEffect(() => {
     fetchTodo(id);
-  }, []);
+  }, [id, fetchTodo]);
 
   const renderActions = () => {
     return (

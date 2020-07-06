@@ -20,7 +20,11 @@ const App = () => {
           <Header />
           <div className="ui two column very relaxed stackable grid">
             <div className="column">
-              <img className="ui image" src="To do list-amico.png" />
+              <img
+                className="ui image"
+                src="To do list-amico.png"
+                alt="main-todo"
+              />
             </div>
             <div className="column" style={{ width: '80vh', margin: '0 auto' }}>
               <Switch>

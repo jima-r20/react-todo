@@ -19,7 +19,7 @@ const TodoList = (props) => {
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       fetchTodos(page);
     }
-  }, [page]);
+  }, [page, isSignedIn, fetchTodos]);
 
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
@@ -141,7 +141,6 @@ const TodoList = (props) => {
       </div>
       <br />
       {renderPagenation()}
-      <br />
       {renderList()}
     </React.Fragment>
   );
