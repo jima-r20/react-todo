@@ -100,6 +100,7 @@ export const createTodo = (params) => async (dispatch) => {
 // Todoの編集
 export const editTodo = (todoId, params) => async (dispatch) => {
   try {
+    console.log(params);
     const token = sessionStorage.getItem('token');
     const response = await baseUrl.patch(`/api/todos/${todoId}/`, params, {
       headers: {

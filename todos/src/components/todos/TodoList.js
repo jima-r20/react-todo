@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchTodos, moveNextPage, movePreviousPage } from '../../actions';
+import {
+  fetchTodos,
+  editTodo,
+  moveNextPage,
+  movePreviousPage,
+} from '../../actions';
 import { Link } from 'react-router-dom';
 
 const TodoList = (props) => {
@@ -11,6 +16,7 @@ const TodoList = (props) => {
     nextPage,
     previousPage,
     fetchTodos,
+    editTodo,
     moveNextPage,
     movePreviousPage,
   } = props;
@@ -21,6 +27,66 @@ const TodoList = (props) => {
     }
   }, [page, isSignedIn, fetchTodos]);
 
+  // is_finishedの操作
+  const onFinished = (todo) => {
+    const params = { is_finished: !todo.is_finished };
+    try {
+      editTodo(todo.id, params);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // is_finishedを操作するためのボタン表示
+  const renderFinished = (todo) => {
+    // 自身のTodo
+    if (todo.user.id === Number(sessionStorage.getItem('userId'))) {
+      return (
+        <React.Fragment>
+          {todo.is_finished ? (
+            <a
+              className="ui right ribbon label teal"
+              onClick={() => onFinished(todo)}
+            >
+              <i className="check circle icon"></i>
+              Done
+            </a>
+          ) : (
+            <a
+              className="ui right ribbon label teal basic"
+              onClick={() => onFinished(todo)}
+            >
+              <i className="circle outline icon"></i>
+              Doing
+            </a>
+          )}
+        </React.Fragment>
+      );
+    }
+    // 他ユーザのTodo
+    if (todo.user.id !== Number(sessionStorage.getItem('userId'))) {
+      return (
+        <React.Fragment>
+          {todo.is_finished ? (
+            <div className="ui right ribbon label">
+              <i className="check circle outline icon"></i>
+              Done
+            </div>
+          ) : (
+            <div
+              className="ui right ribbon label basic"
+              onClick={() => onFinished(todo)}
+            >
+              <i className="circle outline icon"></i>
+              Doing
+            </div>
+          )}
+        </React.Fragment>
+      );
+    }
+  };
+
+  // Editボタン, Deleteボタンの表示
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
@@ -58,27 +124,25 @@ const TodoList = (props) => {
       return todos.map((todo) => {
         // @TODO: Linkタグの中にLinkタグが入ってしまう場合もありエラーを吐く可能性がある
         return (
-          <Link
-            to={`todos/${todo.id}`}
-            className="ui raised link card"
-            key={todo.id}
-          >
+          <div className="ui raised card" key={todo.id}>
             <div className="content">
-              {/* <Link to={`todos/${todo.id}`} className="header"> */}
-              <div className="header">
-                No. {todo.id} <br />
-                Title: {todo.title}
-              </div>
-              {/* </Link> */}
+              {renderFinished(todo)}
+              <Link to={`todos/${todo.id}`} className="header">
+                <div className="header">
+                  No. {todo.id} <br />
+                  Title: {todo.title}
+                </div>
+              </Link>
               <div className="discription" style={{ color: 'gray' }}>
                 Discription: {todo.content}
               </div>
             </div>
             <div className="extra content">
-              Author: {todo.user.display_name}
+              <i className="user icon"></i>
+              {todo.user.display_name}
               {renderAdmin(todo.user.id, todo.id)}
             </div>
-          </Link>
+          </div>
         );
       });
     }
@@ -131,13 +195,9 @@ const TodoList = (props) => {
   return (
     <React.Fragment>
       <div>
-        <div className="ui huge header" style={{ color: '#48834C' }}>
+        {/* <div className="ui huge header" style={{ color: '#48834C' }}>
           ToDo List
-        </div>
-        <Link to="/todos/new" className="ui button olive">
-          <i className="plus icon"></i>
-          Create New Todo
-        </Link>
+        </div> */}
       </div>
       <br />
       {renderPagenation()}
@@ -158,6 +218,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   fetchTodos,
+  editTodo,
   moveNextPage,
   movePreviousPage,
 })(TodoList);

@@ -20,6 +20,12 @@ const Header = (props) => {
           </Link>
           <div className="right menu">
             <div className="item">
+              <Link to="/todos/new" className="ui button olive">
+                <i className="plus icon"></i>
+                Create New Todo
+              </Link>
+            </div>
+            <div className="item">
               <Link
                 to="/"
                 className="ui animated fade inverted button red"
