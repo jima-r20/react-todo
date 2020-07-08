@@ -16,6 +16,7 @@ const TodoCreate = (props) => {
     setSubmitButton('ui disabled olive button');
     setFailureMessege('');
     try {
+      // Todo新規投稿処理
       await createTodo(params);
     } catch (err) {
       setSubmitButton('ui olive button');
@@ -25,6 +26,7 @@ const TodoCreate = (props) => {
 
   useEffect(() => {}, [submitButton, failureMessage]);
 
+  // ページ全体の表示
   return (
     <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
       <div className="ui error message">{failureMessage}</div>

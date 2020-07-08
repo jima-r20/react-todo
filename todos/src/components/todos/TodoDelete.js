@@ -6,14 +6,21 @@ import { fetchTodo, deleteTodo } from '../../actions';
 import history from '../../history';
 import Modal from '../Modal';
 
-const ToDoDelete = (props) => {
+const TodoDelete = (props) => {
   const { id } = props.match.params;
   const { todo, fetchTodo, deleteTodo } = props;
 
   useEffect(() => {
-    fetchTodo(id);
+    (async () => {
+      try {
+        await fetchTodo(id);
+      } catch (err) {
+        alert('Loading Error: Please try again');
+      }
+    })();
   }, [id, fetchTodo]);
 
+  // ボタンの表示
   const renderActions = () => {
     return (
       <React.Fragment>
@@ -27,6 +34,7 @@ const ToDoDelete = (props) => {
     );
   };
 
+  // モーダルのテキスト表示
   const renderContent = () => {
     if (!todo) {
       return 'Are you sure you want to DELETE this Todo?';
@@ -42,6 +50,7 @@ const ToDoDelete = (props) => {
     );
   };
 
+  // モーダルの全体表示
   return (
     <Modal
       title="Delete Todo"
@@ -56,4 +65,4 @@ const mapStateToProps = (state, ownProps) => {
   return { todo: state.todo[ownProps.match.params.id] };
 };
 
-export default connect(mapStateToProps, { fetchTodo, deleteTodo })(ToDoDelete);
+export default connect(mapStateToProps, { fetchTodo, deleteTodo })(TodoDelete);

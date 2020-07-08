@@ -28,13 +28,12 @@ const TodoEdit = (props) => {
   }, [fetchTodo, id, onceLoaded, submitButton, failureMessage]);
 
   const onSubmit = async (formValues) => {
-    // @TODO
-    // formからis_finishedを渡せるようにする
-    const params = { ...formValues, is_finished: false };
+    const params = { ...formValues };
     setOnceLoaded(true);
     setSubmitButton('ui disabled olive button');
     setFailureMessage('');
     try {
+      // Todoのアップデート処理
       await editTodo(id, params);
     } catch (err) {
       setSubmitButton('ui olive button');
@@ -42,6 +41,7 @@ const TodoEdit = (props) => {
     }
   };
 
+  // ページ全体の表示
   return (
     <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
       <div className="ui error message">{failureMessage}</div>

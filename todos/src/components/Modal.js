@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// モーダルの雛形
 const Modal = (props) => {
   const { title, content, actions, onDismiss } = props;
   return ReactDOM.createPortal(

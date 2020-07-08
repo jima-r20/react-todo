@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// 新規登録後のページ
 const signUpResult = () => {
   return (
     <div style={{ textAlign: 'center', color: '#48834C', paddingTop: '10vh' }}>

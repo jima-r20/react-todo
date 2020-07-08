@@ -8,19 +8,24 @@ const TodoShow = (props) => {
   const { id } = props.match.params;
   const { todo, isSignedIn, fetchTodo, editTodo } = props;
 
-  // 選択したTodoのデータ取得
   useEffect(() => {
-    // @TODO
-    // 非同期処理にして例外処理を追加する
-    if (isSignedIn || sessionStorage.getItem('userId') !== null) {
-      fetchTodo(id);
-    }
+    (async () => {
+      if (isSignedIn || sessionStorage.getItem('userId') !== null) {
+        try {
+          // 選択したTodoのデータ取得
+          await fetchTodo(id);
+        } catch (err) {
+          alert('Loading Error: Please reload this page.');
+        }
+      }
+    })();
   }, [isSignedIn, id, fetchTodo]);
 
-  const onFinished = () => {
+  // is_finishedの操作
+  const onFinished = async () => {
     const params = { is_finished: !todo.is_finished };
     try {
-      editTodo(todo.id, params);
+      await editTodo(todo.id, params);
     } catch (err) {
       console.log(err);
     }
@@ -59,12 +64,8 @@ const TodoShow = (props) => {
     }
   };
 
-  // Todoの中身表示
-  // @TODO: ページをリロードするとユーザ情報のstateがリセットされる問題がある
+  // Todoの表示
   const renderTodo = () => {
-    // if (isSignedIn === null && sessionStorage.getItem('userId') !== null) {
-    //   return <div>Loading...</div>;
-    // }
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return (
         <React.Fragment>
@@ -112,6 +113,7 @@ const TodoShow = (props) => {
     }
   };
 
+  // ページの表示
   return (
     <div>
       <div className="ui huge header" style={{ color: '#48834C' }}>

@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SIGN_UP:
-      // SIGN_UPはstate更新いらない？？
       return state;
     case CHECK_SIGNED_IN:
     case SIGN_IN:

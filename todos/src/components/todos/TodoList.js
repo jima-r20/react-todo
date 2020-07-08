@@ -25,7 +25,8 @@ const TodoList = (props) => {
     (async () => {
       if (isSignedIn || sessionStorage.getItem('userId') !== null) {
         try {
-          fetchTodos(page);
+          // Todoリストの取得
+          await fetchTodos(page);
         } catch (err) {
           alert('Loading Error: Please reload this page.');
         }
@@ -34,10 +35,10 @@ const TodoList = (props) => {
   }, [page, isSignedIn, fetchTodos]);
 
   // is_finishedの操作
-  const onFinished = (todo) => {
+  const onFinished = async (todo) => {
     const params = { is_finished: !todo.is_finished };
     try {
-      editTodo(todo.id, params);
+      await editTodo(todo.id, params);
     } catch (err) {
       console.log(err);
     }
@@ -50,21 +51,23 @@ const TodoList = (props) => {
       return (
         <React.Fragment>
           {todo.is_finished ? (
-            <a
-              className="ui right ribbon label teal"
+            <div
               onClick={() => onFinished(todo)}
+              className="ui right ribbon label teal"
+              style={{ cursor: 'pointer' }}
             >
               <i className="check circle icon"></i>
               Done
-            </a>
+            </div>
           ) : (
-            <a
-              className="ui right ribbon label teal basic"
+            <div
               onClick={() => onFinished(todo)}
+              className="ui right ribbon label teal basic"
+              style={{ cursor: 'pointer' }}
             >
               <i className="circle outline icon"></i>
               Doing
-            </a>
+            </div>
           )}
         </React.Fragment>
       );
@@ -124,11 +127,8 @@ const TodoList = (props) => {
 
   // stateからtodo一覧を取得し表示
   const renderList = () => {
-    // @TODO
-    // ページをリロードするとユーザ情報のstateがリセットされる問題がある
     if (isSignedIn || sessionStorage.getItem('userId') !== null) {
       return todos.map((todo) => {
-        // @TODO: Linkタグの中にLinkタグが入ってしまう場合もありエラーを吐く可能性がある
         return (
           <div className="ui raised card" key={todo.id}>
             <div className="content">
@@ -161,11 +161,11 @@ const TodoList = (props) => {
         <div>
           <button
             onClick={() => movePreviousPage(page)}
-            className="ui button disabled"
+            className="ui tiny button disabled"
           >
             <i className="angle left icon" />
           </button>
-          <button onClick={() => moveNextPage(page)} className="ui button">
+          <button onClick={() => moveNextPage(page)} className="ui tiny button">
             <i className="angle right icon" />
           </button>
         </div>
@@ -173,10 +173,13 @@ const TodoList = (props) => {
     } else if (previousPage !== null && nextPage !== null) {
       return (
         <div>
-          <button onClick={() => movePreviousPage(page)} className="ui button">
+          <button
+            onClick={() => movePreviousPage(page)}
+            className="ui tiny button"
+          >
             <i className="angle left icon" />
           </button>
-          <button onClick={() => moveNextPage(page)} className="ui button">
+          <button onClick={() => moveNextPage(page)} className="ui tiny button">
             <i className="angle right icon" />
           </button>
         </div>
@@ -184,12 +187,15 @@ const TodoList = (props) => {
     } else if (nextPage === null) {
       return (
         <div>
-          <button onClick={() => movePreviousPage(page)} className="ui button">
+          <button
+            onClick={() => movePreviousPage(page)}
+            className="ui tiny button"
+          >
             <i className="angle left icon" />
           </button>
           <button
             onClick={() => moveNextPage(page)}
-            className="ui button disabled"
+            className="ui tiny button disabled"
           >
             <i className="angle right icon" />
           </button>
@@ -198,14 +204,12 @@ const TodoList = (props) => {
     }
   };
 
+  // ページ全体の表示
   return (
     <React.Fragment>
-      <div>
-        {/* <div className="ui huge header" style={{ color: '#48834C' }}>
-          ToDo List
-        </div> */}
+      <div className="ui huge header" style={{ color: '#48834C' }}>
+        ToDo List
       </div>
-      <br />
       {renderPagenation()}
       {renderList()}
     </React.Fragment>

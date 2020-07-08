@@ -50,7 +50,6 @@ export const signIn = (params) => async (dispatch) => {
   // 取得したuserIdからユーザ情報を取得(Id, display_name)
   try {
     const res = await baseUrl.post('/api/login/', params);
-    console.log(res);
     sessionStorage.setItem('userId', res.data.id);
     sessionStorage.setItem('token', res.data.token);
     const userId = sessionStorage.getItem('userId');

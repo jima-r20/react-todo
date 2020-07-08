@@ -14,6 +14,7 @@ const SignUp = (props) => {
     setSubmitButton('ui disabled primary button');
     setFailureMessage('');
     try {
+      // 新規登録処理
       await signUp(data);
     } catch (err) {
       setSubmitButton('ui primary button');

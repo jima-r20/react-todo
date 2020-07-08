@@ -4,9 +4,15 @@ import { Link } from 'react-router-dom';
 import { signOut } from '../actions';
 
 const Header = (props) => {
+  const { signOut } = props;
+
   // ログアウト処理
   const handleSignOut = () => {
-    props.signOut();
+    try {
+      signOut();
+    } catch (err) {
+      alert('LOGOUT ERROR: Please try again.');
+    }
   };
 
   // ログイン状態によってボタンの表示を変更
@@ -70,6 +76,7 @@ const Header = (props) => {
     }
   };
 
+  // ページ全体の表示
   return <React.Fragment>{renderAuthButton()}</React.Fragment>;
 };
 

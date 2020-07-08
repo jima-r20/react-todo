@@ -16,6 +16,7 @@ const SignIn = (props) => {
     setSubmitButton('ui disabled primary button');
     setFailureMessege('');
     try {
+      // ログイン処理
       await signIn(params);
     } catch (err) {
       setSubmitButton('ui primary button');
@@ -27,6 +28,7 @@ const SignIn = (props) => {
 
   useEffect(() => {}, [submitButton, failureMessage]);
 
+  // ページ全体の表示(ログインフォームの表示)
   return (
     <form className="ui form error" onSubmit={handleSubmit(onSubmit)}>
       <div className="ui error message">{failureMessage}</div>
