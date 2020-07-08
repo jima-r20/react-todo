@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { checkSignedIn } from '../actions';
+
 import Header from './Header';
 import MainPage from './pages/MainPage';
 import SignUp from './ authentication/SignUp';
@@ -12,7 +16,23 @@ import TodoEdit from './todos/TodoEdit';
 import TodoDelete from './todos/TodoDelete';
 import history from '../history';
 
-const App = () => {
+const App = (props) => {
+  const { checkSignedIn } = props;
+  const userId = sessionStorage.getItem('userId');
+
+  // リロード時にログイン済みであった場合、ユーザ情報をstoreに格納
+  useEffect(() => {
+    (async () => {
+      if (userId !== null) {
+        try {
+          checkSignedIn(userId);
+        } catch (err) {
+          alert('Session Loading Error: Please reload this page.');
+        }
+      }
+    })();
+  }, [userId, checkSignedIn]);
+
   return (
     <div style={{ backgroundColor: '#eee', height: '100vh' }}>
       <Router history={history}>
@@ -46,4 +66,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(null, { checkSignedIn })(App);

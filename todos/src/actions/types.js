@@ -2,6 +2,7 @@
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
+export const CHECK_SIGNED_IN = 'CHECK_SIGNED_IN';
 
 // Todo
 export const FETCH_TODOS = 'FETCH_TODOS';

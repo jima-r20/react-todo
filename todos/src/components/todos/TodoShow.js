@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { fetchTodo } from '../../actions';
+import { fetchTodo, editTodo } from '../../actions';
 
 const TodoShow = (props) => {
   const { id } = props.match.params;
-  const { todo, isSignedIn, fetchTodo } = props;
+  const { todo, isSignedIn, fetchTodo, editTodo } = props;
 
   // 選択したTodoのデータ取得
   useEffect(() => {
@@ -17,19 +17,23 @@ const TodoShow = (props) => {
     }
   }, [isSignedIn, id, fetchTodo]);
 
+  const onFinished = () => {
+    const params = { is_finished: !todo.is_finished };
+    try {
+      editTodo(todo.id, params);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 選択したTodoが自身が投稿したものであった場合のボタン表示
   const renderAdmin = (userId, todoId) => {
     if (userId === Number(sessionStorage.getItem('userId'))) {
       return (
         <div>
-          <Link
-            to={`/todos/edit/${todoId}`}
-            className="ui tiny button primary left floated animated fade"
-          >
-            <div className="visible content">
-              <i className="edit icon"></i>
-            </div>
-            <div className="hidden content">Edit</div>
-          </Link>
+          <button onClick={onFinished} className="ui tiny button teal">
+            {todo.is_finished ? 'Revert Status?' : 'Done this Todo?'}
+          </button>
           <Link
             to={`/todos/delete/${todoId}`}
             className="ui tiny button negative right floated animated fade"
@@ -38,6 +42,15 @@ const TodoShow = (props) => {
               <i className="trash alternate icon"></i>
             </div>
             <div className="hidden content">Delete</div>
+          </Link>
+          <Link
+            to={`/todos/edit/${todoId}`}
+            className="ui tiny button primary right floated animated fade"
+          >
+            <div className="visible content">
+              <i className="edit icon"></i>
+            </div>
+            <div className="hidden content">Edit</div>
           </Link>
         </div>
       );
@@ -80,6 +93,13 @@ const TodoShow = (props) => {
                   <span style={{ fontWeight: 'bold' }}>{todo.content}</span>
                 </div>
                 <br />
+                <div>
+                  <div className="ui ribbon label">Status</div>
+                  <span style={{ color: 'gray' }}>
+                    {todo.is_finished ? 'Done' : 'Doing'}
+                  </span>
+                </div>
+                <br />
                 <Link to="/todos" className="ui bottom right attached label">
                   <i className="reply icon"></i>Back
                 </Link>
@@ -110,4 +130,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchTodo })(TodoShow);
+export default connect(mapStateToProps, { fetchTodo, editTodo })(TodoShow);

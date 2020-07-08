@@ -22,9 +22,15 @@ const TodoList = (props) => {
   } = props;
 
   useEffect(() => {
-    if (isSignedIn || sessionStorage.getItem('userId') !== null) {
-      fetchTodos(page);
-    }
+    (async () => {
+      if (isSignedIn || sessionStorage.getItem('userId') !== null) {
+        try {
+          fetchTodos(page);
+        } catch (err) {
+          alert('Loading Error: Please reload this page.');
+        }
+      }
+    })();
   }, [page, isSignedIn, fetchTodos]);
 
   // is_finishedの操作

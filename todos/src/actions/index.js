@@ -2,6 +2,7 @@ import baseUrl from '../apis/baseUrl';
 import history from '../history';
 import {
   SIGN_UP,
+  CHECK_SIGNED_IN,
   SIGN_IN,
   SIGN_OUT,
   FETCH_TODOS,
@@ -12,6 +13,10 @@ import {
   NEXT_PAGE,
   PREVIOUS_PAGE,
 } from './types';
+
+/*--------------------------------------------|
+|<----------------    Auth    --------------->|
+|--------------------------------------------*/
 
 // 新規登録
 export const signUp = (formValues) => async (dispatch) => {
@@ -25,6 +30,16 @@ export const signUp = (formValues) => async (dispatch) => {
   }
 };
 
+// リロード時にログイン済みであった場合、ユーザ情報をstoreに格納するためのaction
+export const checkSignedIn = (userId) => async (dispatch) => {
+  try {
+    const response = await baseUrl.get(`/api/users/${userId}`);
+    dispatch({ type: CHECK_SIGNED_IN, payload: response.data });
+  } catch (err) {
+    throw err;
+  }
+};
+
 // ログイン
 export const signIn = (params) => async (dispatch) => {
   // トークン認証　ログイン処理
@@ -32,19 +47,12 @@ export const signIn = (params) => async (dispatch) => {
   // sessionStorageにセッション情報を格納
   // ログイン成功後、ToDoリストのページに遷移
   // ↓
-  // 上記処理で取得したuserIdからユーザ情報を取得(Id, display_name)
+  // 取得したuserIdからユーザ情報を取得(Id, display_name)
   try {
     const res = await baseUrl.post('/api/login/', params);
+    console.log(res);
     sessionStorage.setItem('userId', res.data.id);
     sessionStorage.setItem('token', res.data.token);
-
-    // @TODO
-    // ページをリフレッシュするとセッション情報は残るが、
-    // ユーザ情報のstateがリセットされる問題が残っている
-    // Header.jsでuseEffectを使えばなんとかなりそう？
-    // → signInの引数的にsessionStorage系はactionに入れない方がやりやすいかも
-    // → 引数をuserIdにした方がいい？
-
     const userId = sessionStorage.getItem('userId');
     const response = await baseUrl.get(`/api/users/${userId}`);
     dispatch({ type: SIGN_IN, payload: response.data });
@@ -63,12 +71,20 @@ export const signOut = () => {
   return { type: SIGN_OUT };
 };
 
+/*---------------------------------------------|
+|<----------------    Todo    ---------------->|
+|---------------------------------------------*/
+
 // Todoリスト一覧取得
 export const fetchTodos = (currentPage) => async (dispatch) => {
-  const response = await baseUrl.get('/api/todos/', {
-    params: { page: currentPage },
-  });
-  dispatch({ type: FETCH_TODOS, payload: response.data });
+  try {
+    const response = await baseUrl.get('/api/todos/', {
+      params: { page: currentPage },
+    });
+    dispatch({ type: FETCH_TODOS, payload: response.data });
+  } catch (err) {
+    throw err;
+  }
 };
 
 // Todoリスト個別取得
@@ -100,7 +116,6 @@ export const createTodo = (params) => async (dispatch) => {
 // Todoの編集
 export const editTodo = (todoId, params) => async (dispatch) => {
   try {
-    console.log(params);
     const token = sessionStorage.getItem('token');
     const response = await baseUrl.patch(`/api/todos/${todoId}/`, params, {
       headers: {
@@ -116,13 +131,21 @@ export const editTodo = (todoId, params) => async (dispatch) => {
 
 // Todoの削除
 export const deleteTodo = (id) => async (dispatch) => {
-  const token = sessionStorage.getItem('token');
-  await baseUrl.delete(`/api/todos/${id}`, {
-    headers: { Authorization: `Token ${token}` },
-  });
-  dispatch({ type: DELETE_TODO, payload: id });
-  history.push('/todos');
+  try {
+    const token = sessionStorage.getItem('token');
+    await baseUrl.delete(`/api/todos/${id}`, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    dispatch({ type: DELETE_TODO, payload: id });
+    history.push('/todos');
+  } catch (err) {
+    throw err;
+  }
 };
+
+/*---------------------------------------------|
+|<-------------    Pagenation    ------------->|
+|---------------------------------------------*/
 
 // @TODO
 // 下記のaction creatorが呼び出されると、下記で１回、
@@ -131,18 +154,26 @@ export const deleteTodo = (id) => async (dispatch) => {
 
 // 次ページへ遷移
 export const moveNextPage = (currentPage) => async (dispatch) => {
-  const netxPage = currentPage + 1;
-  const response = await baseUrl.get('/api/todos/', {
-    params: { page: netxPage },
-  });
-  dispatch({ type: NEXT_PAGE, payload: response });
+  try {
+    const netxPage = currentPage + 1;
+    const response = await baseUrl.get('/api/todos/', {
+      params: { page: netxPage },
+    });
+    dispatch({ type: NEXT_PAGE, payload: response });
+  } catch (err) {
+    throw err;
+  }
 };
 
 // 前ページへ遷移
 export const movePreviousPage = (currentPage) => async (dispatch) => {
-  const previousPage = currentPage - 1;
-  const response = await baseUrl.get('/api/todos/', {
-    params: { page: previousPage },
-  });
-  dispatch({ type: PREVIOUS_PAGE, payload: response });
+  try {
+    const previousPage = currentPage - 1;
+    const response = await baseUrl.get('/api/todos/', {
+      params: { page: previousPage },
+    });
+    dispatch({ type: PREVIOUS_PAGE, payload: response });
+  } catch (err) {
+    throw err;
+  }
 };

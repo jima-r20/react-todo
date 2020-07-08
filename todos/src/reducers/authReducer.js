@@ -1,4 +1,4 @@
-import { SIGN_UP, SIGN_IN, SIGN_OUT } from '../actions/types';
+import { SIGN_UP, SIGN_IN, SIGN_OUT, CHECK_SIGNED_IN } from '../actions/types';
 
 const INITIAL_STATE = {
   isSignedIn: null,
@@ -11,6 +11,7 @@ export default (state = INITIAL_STATE, action) => {
     case SIGN_UP:
       // SIGN_UPはstate更新いらない？？
       return state;
+    case CHECK_SIGNED_IN:
     case SIGN_IN:
       return {
         ...state,
